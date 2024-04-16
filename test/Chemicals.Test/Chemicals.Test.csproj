@@ -22,4 +22,8 @@
         </PackageReference>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\..\src\Chemicals.Core\Chemicals.Core.csproj" />
+    </ItemGroup>
+
 </Project>
