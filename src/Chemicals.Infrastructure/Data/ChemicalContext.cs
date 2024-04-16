@@ -1,6 +1,6 @@
+using Chemicals.Core.Entities.ChemicalAggregate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Shared.Integration.Entities.ChemicalAggregate;
 
 namespace Chemicals.Infrastructure.Data;
 

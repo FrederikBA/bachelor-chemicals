@@ -1,6 +1,6 @@
 using Ardalis.Specification.EntityFrameworkCore;
+using Chemicals.Core.Interfaces;
 using Chemicals.Core.Interfaces.Repositories;
-using Shared.Integration.Interfaces;
 
 namespace Chemicals.Infrastructure.Data;
 

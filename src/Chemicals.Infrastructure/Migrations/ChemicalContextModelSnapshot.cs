@@ -22,7 +22,7 @@ namespace Chemicals.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Shared.Integration.Entities.ChemicalAggregate.Producer", b =>
+            modelBuilder.Entity("Chemicals.Core.Entities.ChemicalAggregate.Producer", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -49,7 +49,7 @@ namespace Chemicals.Infrastructure.Migrations
                     b.ToTable("Producers");
                 });
 
-            modelBuilder.Entity("Shared.Integration.Entities.ChemicalAggregate.ProducerAddress", b =>
+            modelBuilder.Entity("Chemicals.Core.Entities.ChemicalAggregate.ProducerAddress", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -74,7 +74,7 @@ namespace Chemicals.Infrastructure.Migrations
                     b.ToTable("ProducerAddress", "dbo");
                 });
 
-            modelBuilder.Entity("Shared.Integration.Entities.ChemicalAggregate.Product", b =>
+            modelBuilder.Entity("Chemicals.Core.Entities.ChemicalAggregate.Product", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -105,7 +105,7 @@ namespace Chemicals.Infrastructure.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("Shared.Integration.Entities.ChemicalAggregate.ProductCategory", b =>
+            modelBuilder.Entity("Chemicals.Core.Entities.ChemicalAggregate.ProductCategory", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -126,7 +126,7 @@ namespace Chemicals.Infrastructure.Migrations
                     b.ToTable("ProductCategories");
                 });
 
-            modelBuilder.Entity("Shared.Integration.Entities.ChemicalAggregate.ProductGroup", b =>
+            modelBuilder.Entity("Chemicals.Core.Entities.ChemicalAggregate.ProductGroup", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -145,7 +145,7 @@ namespace Chemicals.Infrastructure.Migrations
                     b.ToTable("ProductGroups");
                 });
 
-            modelBuilder.Entity("Shared.Integration.Entities.ChemicalAggregate.ProductStatus", b =>
+            modelBuilder.Entity("Chemicals.Core.Entities.ChemicalAggregate.ProductStatus", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -167,7 +167,7 @@ namespace Chemicals.Infrastructure.Migrations
                     b.ToTable("ProductStatus");
                 });
 
-            modelBuilder.Entity("Shared.Integration.Entities.ChemicalAggregate.ProductWarningSentence", b =>
+            modelBuilder.Entity("Chemicals.Core.Entities.ChemicalAggregate.ProductWarningSentence", b =>
                 {
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
@@ -180,30 +180,30 @@ namespace Chemicals.Infrastructure.Migrations
                     b.ToTable("ProductWarningSentences");
                 });
 
-            modelBuilder.Entity("Shared.Integration.Entities.ChemicalAggregate.Producer", b =>
+            modelBuilder.Entity("Chemicals.Core.Entities.ChemicalAggregate.Producer", b =>
                 {
-                    b.HasOne("Shared.Integration.Entities.ChemicalAggregate.ProducerAddress", "Address")
+                    b.HasOne("Chemicals.Core.Entities.ChemicalAggregate.ProducerAddress", "Address")
                         .WithMany()
                         .HasForeignKey("AddressId");
 
                     b.Navigation("Address");
                 });
 
-            modelBuilder.Entity("Shared.Integration.Entities.ChemicalAggregate.Product", b =>
+            modelBuilder.Entity("Chemicals.Core.Entities.ChemicalAggregate.Product", b =>
                 {
-                    b.HasOne("Shared.Integration.Entities.ChemicalAggregate.Producer", "Producer")
+                    b.HasOne("Chemicals.Core.Entities.ChemicalAggregate.Producer", "Producer")
                         .WithMany("Products")
                         .HasForeignKey("ProducerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Shared.Integration.Entities.ChemicalAggregate.ProductCategory", "ProductCategory")
+                    b.HasOne("Chemicals.Core.Entities.ChemicalAggregate.ProductCategory", "ProductCategory")
                         .WithMany("Products")
                         .HasForeignKey("ProductCategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Shared.Integration.Entities.ChemicalAggregate.ProductStatus", "ProductStatus")
+                    b.HasOne("Chemicals.Core.Entities.ChemicalAggregate.ProductStatus", "ProductStatus")
                         .WithMany("Products")
                         .HasForeignKey("ProductStatusId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -216,9 +216,9 @@ namespace Chemicals.Infrastructure.Migrations
                     b.Navigation("ProductStatus");
                 });
 
-            modelBuilder.Entity("Shared.Integration.Entities.ChemicalAggregate.ProductCategory", b =>
+            modelBuilder.Entity("Chemicals.Core.Entities.ChemicalAggregate.ProductCategory", b =>
                 {
-                    b.HasOne("Shared.Integration.Entities.ChemicalAggregate.ProductGroup", "ProductGroup")
+                    b.HasOne("Chemicals.Core.Entities.ChemicalAggregate.ProductGroup", "ProductGroup")
                         .WithMany("ProductCategories")
                         .HasForeignKey("ProductGroupId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -227,22 +227,22 @@ namespace Chemicals.Infrastructure.Migrations
                     b.Navigation("ProductGroup");
                 });
 
-            modelBuilder.Entity("Shared.Integration.Entities.ChemicalAggregate.Producer", b =>
+            modelBuilder.Entity("Chemicals.Core.Entities.ChemicalAggregate.Producer", b =>
                 {
                     b.Navigation("Products");
                 });
 
-            modelBuilder.Entity("Shared.Integration.Entities.ChemicalAggregate.ProductCategory", b =>
+            modelBuilder.Entity("Chemicals.Core.Entities.ChemicalAggregate.ProductCategory", b =>
                 {
                     b.Navigation("Products");
                 });
 
-            modelBuilder.Entity("Shared.Integration.Entities.ChemicalAggregate.ProductGroup", b =>
+            modelBuilder.Entity("Chemicals.Core.Entities.ChemicalAggregate.ProductGroup", b =>
                 {
                     b.Navigation("ProductCategories");
                 });
 
-            modelBuilder.Entity("Shared.Integration.Entities.ChemicalAggregate.ProductStatus", b =>
+            modelBuilder.Entity("Chemicals.Core.Entities.ChemicalAggregate.ProductStatus", b =>
                 {
                     b.Navigation("Products");
                 });
