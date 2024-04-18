@@ -8,6 +8,7 @@ using Chemicals.Web.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Shared.Integration.Configuration;
 
 const string policyName = "AllowOrigin";
 
@@ -47,7 +48,7 @@ builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IProductViewModelService, ProductViewModelService>();
 
 //JWT Key
-var key = Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:SecretKey"]!);
+var key = Encoding.UTF8.GetBytes(Constants.JwtKey);
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
