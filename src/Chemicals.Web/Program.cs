@@ -36,14 +36,15 @@ builder.Services.AddDbContext<ChemicalContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DbContext"));
 });
 
+//Build repositories
+builder.Services.AddScoped(typeof(IReadRepository<>), typeof(EfReadRepository<>));
+builder.Services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
+
+
 //Build services
 builder.Services.AddScoped<IProductService, ProductService>();
 
 builder.Services.AddScoped<IProductViewModelService, ProductViewModelService>();
-
-//Build repositories
-builder.Services.AddScoped(typeof(IReadRepository<>), typeof(EfRepository<>));
-builder.Services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
 
 //JWT Key
 var key = Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:SecretKey"]!);
