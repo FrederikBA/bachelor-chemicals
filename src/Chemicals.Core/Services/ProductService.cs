@@ -26,4 +26,9 @@ public class ProductService : IProductService
         
         return products;
     }
+
+    public Task<Product> GetProductByIdAsync(int id)
+    {
+        throw new NotImplementedException();
+    }
 }
