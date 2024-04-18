@@ -34,7 +34,7 @@ builder.Services.AddCors(options =>
 //DBContext
 builder.Services.AddDbContext<ChemicalContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DbContext"));
+    options.UseSqlServer(Constants.ConnectionStrings.ShwChemicals);
 });
 
 //Build repositories
@@ -48,7 +48,7 @@ builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IProductViewModelService, ProductViewModelService>();
 
 //JWT Key
-var key = Encoding.UTF8.GetBytes(Constants.JwtKey);
+var key = Encoding.UTF8.GetBytes(Constants.Authorization.JwtKey);
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>

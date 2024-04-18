@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
+using Shared.Integration.Configuration;
 
 namespace Chemicals.Infrastructure.Data;
 
@@ -7,8 +8,7 @@ public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<ChemicalCo
 {
     public ChemicalContext CreateDbContext(string[] args)
     {
-        //TODO: Move connection string to appsettings.json / configuration file
-        const string connectionString = "Server=localhost;Database=ShwChemicals;User Id=sa;Password=thisIsSuperStrong1234;TrustServerCertificate=True";
+        const string connectionString = Constants.ConnectionStrings.ShwChemicals;
         
         var optionsBuilder = new DbContextOptionsBuilder<ChemicalContext>();
         optionsBuilder.UseSqlServer(connectionString);
