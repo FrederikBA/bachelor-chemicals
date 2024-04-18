@@ -1,6 +1,10 @@
 using System.Text;
+using Chemicals.Core.Interfaces.DomainServices;
 using Chemicals.Core.Interfaces.Repositories;
+using Chemicals.Core.Services;
 using Chemicals.Infrastructure.Data;
+using Chemicals.Web.Interfaces;
+using Chemicals.Web.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -32,11 +36,15 @@ builder.Services.AddDbContext<ChemicalContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DbContext"));
 });
 
-//Build services
-
 //Build repositories
-builder.Services.AddScoped(typeof(IReadRepository<>), typeof(EfRepository<>));
+builder.Services.AddScoped(typeof(IReadRepository<>), typeof(EfReadRepository<>));
 builder.Services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
+
+
+//Build services
+builder.Services.AddScoped<IProductService, ProductService>();
+
+builder.Services.AddScoped<IProductViewModelService, ProductViewModelService>();
 
 //JWT Key
 var key = Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:SecretKey"]!);
