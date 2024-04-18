@@ -51,4 +51,37 @@ public class ProductUnitTests
         //Assert
         Assert.NotNull(exception);
     }
+    
+    [Fact]
+    public async Task GetProductByIdAsync_ReturnsProduct()
+    {
+        //Arrange
+        var testProduct = ProductTestHelper.GetTestProducts()[0];
+
+        _productReadRepositoryMock.Setup(x =>
+                x.FirstOrDefaultAsync(It.IsAny<Specification<Product>>(), new CancellationToken()))
+            .ReturnsAsync(testProduct);
+
+        //Act
+        var result = await _productService.GetProductByIdAsync(1);
+
+        //Assert
+        Assert.NotNull(result);
+        Assert.Equal(testProduct, result);
+    }
+    
+    [Fact]
+    public async Task GetProductByIdAsync_ThrowsProductNotFoundException()
+    {
+        //Arrange
+        _productReadRepositoryMock.Setup(x =>
+                x.GetByIdAsync(It.IsAny<int>(), new CancellationToken()))
+            .ReturnsAsync((Product)null);
+
+        //Act
+        var exception = await Assert.ThrowsAsync<ProductNotFoundException>(() => _productService.GetProductByIdAsync(1));
+
+        //Assert
+        Assert.NotNull(exception);
+    }
 }

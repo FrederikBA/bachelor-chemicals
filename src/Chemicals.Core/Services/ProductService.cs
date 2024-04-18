@@ -26,4 +26,16 @@ public class ProductService : IProductService
         
         return products;
     }
+
+    public async Task<Product> GetProductByIdAsync(int id)
+    {
+        var product = await _productReadRepository.FirstOrDefaultAsync(new GetProductByIdFullSpec(id));
+        
+        if (product == null)
+        {
+            throw new ProductNotFoundException(id);
+        }
+
+        return product;
+    }
 }
