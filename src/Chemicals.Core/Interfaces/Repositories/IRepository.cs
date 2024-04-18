@@ -1,4 +1,5 @@
 using Ardalis.Specification;
+using Shared.Integration.Interfaces;
 
 namespace Chemicals.Core.Interfaces.Repositories;
 

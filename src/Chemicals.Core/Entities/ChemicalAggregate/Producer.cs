@@ -1,3 +1,5 @@
+using Shared.Integration.Models;
+
 namespace Chemicals.Core.Entities.ChemicalAggregate;
 
 public class Producer : BaseEntity

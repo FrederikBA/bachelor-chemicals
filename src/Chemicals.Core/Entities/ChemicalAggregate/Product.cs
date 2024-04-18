@@ -1,4 +1,5 @@
-using Chemicals.Core.Interfaces;
+using Shared.Integration.Interfaces;
+using Shared.Integration.Models;
 
 namespace Chemicals.Core.Entities.ChemicalAggregate;
 
