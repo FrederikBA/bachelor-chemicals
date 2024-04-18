@@ -20,4 +20,11 @@ public class ProductController : ControllerBase
         var products = await _productViewModelService.GetProductViewModelsAsync();
         return Ok(products);
     }
+    
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetProduct(int id)
+    {
+        var product = await _productViewModelService.GetProductViewModelAsync(id);
+        return Ok(product);
+    }
 }
