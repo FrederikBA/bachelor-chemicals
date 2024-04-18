@@ -1,6 +1,8 @@
 using Chemicals.Core.Entities.ChemicalAggregate;
+using Chemicals.Core.Exceptions;
 using Chemicals.Core.Interfaces.DomainServices;
 using Chemicals.Core.Interfaces.Repositories;
+using Chemicals.Core.Specifications;
 
 namespace Chemicals.Core.Services;
 
@@ -13,8 +15,15 @@ public class ProductService : IProductService
         _productReadRepository = productReadRepository;
     }
 
-    public Task<List<Product>> GetAllProductsAsync()
+    public async Task<List<Product>> GetAllProductsAsync()
     {
-        throw new NotImplementedException();
+        var products = await _productReadRepository.ListAsync(new GetProductsFullSpec());
+        
+        if (products == null || products.Count == 0)
+        {
+            throw new ProductsNotFoundException();
+        }
+        
+        return products;
     }
 }
