@@ -1,6 +1,10 @@
 using System.Text;
+using Chemicals.Core.Interfaces.DomainServices;
 using Chemicals.Core.Interfaces.Repositories;
+using Chemicals.Core.Services;
 using Chemicals.Infrastructure.Data;
+using Chemicals.Web.Interfaces;
+using Chemicals.Web.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -33,6 +37,9 @@ builder.Services.AddDbContext<ChemicalContext>(options =>
 });
 
 //Build services
+builder.Services.AddScoped<IProductService, ProductService>();
+
+builder.Services.AddScoped<IProductViewModelService, ProductViewModelService>();
 
 //Build repositories
 builder.Services.AddScoped(typeof(IReadRepository<>), typeof(EfRepository<>));
