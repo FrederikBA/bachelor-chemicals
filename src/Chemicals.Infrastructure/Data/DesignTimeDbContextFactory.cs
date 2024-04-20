@@ -8,7 +8,7 @@ public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<ChemicalCo
 {
     public ChemicalContext CreateDbContext(string[] args)
     {
-        const string connectionString = Constants.ConnectionStrings.ShwChemicals;
+        const string connectionString = Config.ConnectionStrings.ShwChemicals;
         
         var optionsBuilder = new DbContextOptionsBuilder<ChemicalContext>();
         optionsBuilder.UseSqlServer(connectionString);
