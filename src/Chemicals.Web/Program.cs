@@ -34,7 +34,7 @@ builder.Services.AddCors(options =>
 //DBContext
 builder.Services.AddDbContext<ChemicalContext>(options =>
 {
-    options.UseSqlServer(Constants.ConnectionStrings.ShwChemicals);
+    options.UseSqlServer(Config.ConnectionStrings.ShwChemicals);
 });
 
 //Build repositories
@@ -48,7 +48,7 @@ builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IProductViewModelService, ProductViewModelService>();
 
 //JWT Key
-var key = Encoding.UTF8.GetBytes(Constants.Authorization.JwtKey);
+var key = Encoding.UTF8.GetBytes(Config.Authorization.JwtKey);
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -64,9 +64,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("RequireShippingCompanyAdminRole", policy => policy.RequireRole("ShippingCompanyAdmin"));
-    options.AddPolicy("RequireKemiDbUserRole", policy => policy.RequireRole("KemiDbUser"));
-    options.AddPolicy("RequireSuperAdminRole", policy => policy.RequireRole("SuperAdmin"));
+    options.AddPolicy(Config.Authorization.Policies.RequireShippingCompanyAdminRole, policy => policy.RequireRole(Config.Authorization.Roles.ShippingCompanyAdmin));
+    options.AddPolicy(Config.Authorization.Policies.RequireKemiDbUserRole, policy => policy.RequireRole(Config.Authorization.Roles.KemiDbUser));
+    options.AddPolicy(Config.Authorization.Policies.RequireSuperAdminRole, policy => policy.RequireRole(Config.Authorization.Roles.SuperAdmin));
+    options.AddPolicy(Config.Authorization.Policies.RequireIntegrationPolicy, policy => policy.RequireRole(Config.Authorization.Roles.IntegrationPolicy));
 });
 
 var app = builder.Build();

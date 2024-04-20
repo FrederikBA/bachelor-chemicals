@@ -1,3 +1,5 @@
+using Chemicals.Core.Interfaces.DomainServices;
+using Chemicals.Core.Models.Dtos;
 using Chemicals.Web.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,10 +10,12 @@ namespace Chemicals.Web.Controllers;
 public class ProductController : ControllerBase
 {
     private readonly IProductViewModelService _productViewModelService;
+    private readonly IProductService _productService;
 
-    public ProductController(IProductViewModelService productViewModelService)
+    public ProductController(IProductViewModelService productViewModelService, IProductService productService)
     {
         _productViewModelService = productViewModelService;
+        _productService = productService;
     }
     
     [HttpGet("all")]
@@ -26,5 +30,12 @@ public class ProductController : ControllerBase
     {
         var product = await _productViewModelService.GetProductViewModelAsync(id);
         return Ok(product);
+    }
+    
+    [HttpPost("add-warning-sentence")]
+    public async Task<IActionResult> AddWarningSentence(AddWsDto dto)
+    {
+        var warningSentence = await _productService.AddWarningSentenceAsync(dto);
+        return Ok("fisk");
     }
 }

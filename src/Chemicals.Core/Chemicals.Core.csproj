@@ -7,13 +7,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Models\Dtos\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <PackageReference Include="Ardalis.Specification" Version="7.0.0" />
       <PackageReference Include="Ardalis.Specification.EntityFrameworkCore" Version="7.0.0" />
-      <PackageReference Include="Fra.SharedLibrary" Version="8.0.9" />
+      <PackageReference Include="Fra.SharedLibrary" Version="8.0.12" />
     </ItemGroup>
 
 </Project>

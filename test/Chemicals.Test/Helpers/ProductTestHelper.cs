@@ -37,4 +37,32 @@ public static class ProductTestHelper
         
         return new List<Product> { productOne, productTwo };
     }
+    
+    public static Product GetTestProduct()
+    {
+        // Create a product group
+        var productGroup = new ProductGroup()
+        {   
+            GroupName = "Test Product Group",
+            Remarks = "Test Remarks"
+        };
+        
+        // Create a product category
+        var productCategory = new ProductCategory()
+        {
+            Category = "Test Product Category",
+            ProductGroup = productGroup
+        };
+        
+        // Create a product
+        var product = new Product()
+        {
+            Id = 1,
+            Name = "Test Product 1",
+            ProductCategory = productCategory
+        };
+        
+        return product;
+    }
+    
 }
