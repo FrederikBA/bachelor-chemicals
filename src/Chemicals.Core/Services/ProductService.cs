@@ -78,4 +78,9 @@ public class ProductService : IProductService
         
         return productWarningSentence;
     }
+
+    public Task<List<int>> GetProductWarningSentencesAsync(int productId)
+    {
+        throw new NotImplementedException();
+    }
 }
