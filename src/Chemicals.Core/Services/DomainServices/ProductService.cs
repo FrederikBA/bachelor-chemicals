@@ -9,7 +9,7 @@ using Shared.Integration.Authorization;
 using Shared.Integration.Configuration;
 using Shared.Integration.Models.Dtos;
 
-namespace Chemicals.Core.Services;
+namespace Chemicals.Core.Services.DomainServices;
 
 public class ProductService : IProductService
 {

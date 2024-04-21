@@ -5,6 +5,7 @@ using Chemicals.Core.Interfaces.DomainServices;
 using Chemicals.Core.Interfaces.Repositories;
 using Chemicals.Core.Models.Dtos;
 using Chemicals.Core.Services;
+using Chemicals.Core.Services.DomainServices;
 using Chemicals.Test.Helpers;
 using Moq;
 
