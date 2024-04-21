@@ -1,7 +1,7 @@
 using System.Text;
 using Chemicals.Core.Interfaces.DomainServices;
 using Chemicals.Core.Interfaces.Repositories;
-using Chemicals.Core.Services;
+using Chemicals.Core.Services.DomainServices;
 using Chemicals.Infrastructure.Data;
 using Chemicals.Web.Interfaces;
 using Chemicals.Web.Services;
