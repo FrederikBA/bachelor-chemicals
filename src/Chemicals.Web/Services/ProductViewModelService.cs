@@ -1,6 +1,7 @@
 using Chemicals.Core.Interfaces.DomainServices;
 using Chemicals.Web.Interfaces;
 using Chemicals.Web.ViewModels.Product;
+using Chemicals.Web.ViewModels.WarningSentence;
 
 namespace Chemicals.Web.Services;
 
@@ -13,11 +14,17 @@ public class ProductViewModelService : IProductViewModelService
         _productService = productService;
     }
     
-    public async Task<List<ProductViewModel>> GetProductViewModelsAsync()
-    {
-        var productEntities = await _productService.GetAllProductsAsync();
+public async Task<List<ProductViewModel>> GetProductViewModelsAsync()
+{
+    var productEntities = await _productService.GetAllProductsAsync();
 
-        var productViewModels = productEntities.Select(product => new ProductViewModel
+    var productViewModels = new List<ProductViewModel>();
+
+    foreach (var product in productEntities)
+    {
+        var warningSentences = await _productService.GetProductWarningSentencesAsync(product.Id);
+
+        var productViewModel = new ProductViewModel
         {
             Id = product.Id,
             Name = product.Name,
@@ -55,15 +62,27 @@ public class ProductViewModelService : IProductViewModelService
                     GroupName = product.ProductCategory?.ProductGroup?.GroupName,
                     Remarks = product.ProductCategory?.ProductGroup?.Remarks
                 }
-            }
-        }).ToList();
+            },
 
-        return productViewModels;
+            //Add Warning Sentences from ProductService
+            WarningSentences = warningSentences.Select(id => new WarningSentenceViewModel
+            {
+                Id = id,
+            }).ToList()
+        };
+
+        productViewModels.Add(productViewModel);
     }
+
+    return productViewModels;
+}
+
 
     public async Task<ProductViewModel> GetProductViewModelAsync(int id)
     {
         var productEntity = await _productService.GetProductByIdAsync(id);
+        
+        var warningSentences = await _productService.GetProductWarningSentencesAsync(productEntity.Id);
 
         var productViewModel = new ProductViewModel
         {
@@ -103,7 +122,13 @@ public class ProductViewModelService : IProductViewModelService
                     GroupName = productEntity.ProductCategory?.ProductGroup?.GroupName,
                     Remarks = productEntity.ProductCategory?.ProductGroup?.Remarks
                 }
-            }
+            },
+            
+            //Add Warning Sentences from ProductService
+            WarningSentences = warningSentences.Select(id => new WarningSentenceViewModel
+            {
+                Id = id,
+            }).ToList()
         };
         return productViewModel;
     }

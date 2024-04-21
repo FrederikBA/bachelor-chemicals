@@ -70,8 +70,8 @@ public class ProductService : IProductService
         //Add warning sentence to product
         var productWarningSentence = new ProductWarningSentence
         {
-            ProductId = 1,
-            WarningSentenceId = warningSentenceDtos.First().WarningSentenceId
+            ProductId = dto.ProductId,
+            WarningSentenceId = dto.WarningSentenceId
         };
 
         await _productWarningSentenceRepository.AddAsync(productWarningSentence);
@@ -83,11 +83,6 @@ public class ProductService : IProductService
     {
         var productWarningSentences =
             await _productWarningSentenceRepository.ListAsync(new GetProductWarningSentencesByProductIdSpec(productId));
-
-        if (productWarningSentences == null || productWarningSentences.Count == 0)
-        {
-            throw new Exception("Error occured retrieving warning sentences for product");
-        }
 
         var warningSentenceIds = productWarningSentences.Select(warningSentence => warningSentence.WarningSentenceId)
             .ToList();
