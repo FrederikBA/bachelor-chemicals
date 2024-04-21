@@ -8,7 +8,7 @@ public interface IProductService
     Task<List<Product>> GetAllProductsAsync();
     Task<Product> GetProductByIdAsync(int id);
     Task<ProductWarningSentence> AddWarningSentenceAsync(AddWsDto dto);
-    Task<ProductWarningSentence> RemoveWarningSentenceAsync(AddWsDto dto);
+    Task<ProductWarningSentence> RemoveWarningSentenceAsync(RemoveWsDto dto);
     Task<List<int>> GetProductWarningSentencesAsync(int productId);
 
 }
