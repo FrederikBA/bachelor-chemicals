@@ -66,16 +66,27 @@ public class ProductService : IProductService
         var itemsExists = itemIds.Contains(dto.WarningSentenceId);
 
         if (!itemsExists) throw new Exception("Warning Sentence not found.");
-        
+
         //Add warning sentence to product
         var productWarningSentence = new ProductWarningSentence
         {
-            ProductId = 1,
-            WarningSentenceId = warningSentenceDtos.First().WarningSentenceId
+            ProductId = dto.ProductId,
+            WarningSentenceId = dto.WarningSentenceId
         };
 
         await _productWarningSentenceRepository.AddAsync(productWarningSentence);
-        
+
         return productWarningSentence;
+    }
+
+    public async Task<List<int>> GetProductWarningSentencesAsync(int productId)
+    {
+        var productWarningSentences =
+            await _productWarningSentenceRepository.ListAsync(new GetProductWarningSentencesByProductIdSpec(productId));
+
+        var warningSentenceIds = productWarningSentences.Select(warningSentence => warningSentence.WarningSentenceId)
+            .ToList();
+
+        return warningSentenceIds;
     }
 }
