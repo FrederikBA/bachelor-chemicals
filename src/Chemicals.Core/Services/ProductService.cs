@@ -79,6 +79,11 @@ public class ProductService : IProductService
         return productWarningSentence;
     }
 
+    public Task<ProductWarningSentence> RemoveWarningSentenceAsync(AddWsDto dto)
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task<List<int>> GetProductWarningSentencesAsync(int productId)
     {
         var productWarningSentences =
