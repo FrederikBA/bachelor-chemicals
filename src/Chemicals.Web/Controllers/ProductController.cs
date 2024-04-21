@@ -36,6 +36,13 @@ public class ProductController : ControllerBase
     public async Task<IActionResult> AddWarningSentence(AddWsDto dto)
     {
         var warningSentence = await _productService.AddWarningSentenceAsync(dto);
-        return Ok("fisk");
+        return Ok(warningSentence);
+    }
+    
+    [HttpPost("remove-warning-sentence")]
+    public async Task<IActionResult> RemoveWarningSentence(RemoveWsDto dto)
+    {
+        var warningSentence = await _productService.RemoveWarningSentenceAsync(dto);
+        return Ok(warningSentence);
     }
 }

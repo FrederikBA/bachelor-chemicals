@@ -79,6 +79,27 @@ public class ProductService : IProductService
         return productWarningSentence;
     }
 
+    public async Task<ProductWarningSentence> RemoveWarningSentenceAsync(RemoveWsDto dto)
+    {
+        //Remove warning sentence from product
+        var productWarningSentence = new ProductWarningSentence
+        {
+            ProductId = dto.ProductId,
+            WarningSentenceId = dto.WarningSentenceId
+        };
+
+        try
+        {
+            await _productWarningSentenceRepository.DeleteAsync(productWarningSentence);
+
+            return productWarningSentence;
+        }
+        catch (Exception e)
+        {
+            throw new Exception("Warning Sentence not found on product.");
+        }
+    }
+
     public async Task<List<int>> GetProductWarningSentencesAsync(int productId)
     {
         var productWarningSentences =
