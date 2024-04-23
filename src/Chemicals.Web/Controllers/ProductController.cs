@@ -2,11 +2,14 @@ using Chemicals.Core.Interfaces.DomainServices;
 using Chemicals.Core.Models.Dtos;
 using Chemicals.Web.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Shared.Integration.Authorization.Attributes;
+using Shared.Integration.Configuration;
 
 namespace Chemicals.Web.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[AuthorizeRoles(Config.Authorization.Roles.KemiDbUser, Config.Authorization.Roles.SuperAdmin)]
 public class ProductController : ControllerBase
 {
     private readonly IProductViewModelService _productViewModelService;
