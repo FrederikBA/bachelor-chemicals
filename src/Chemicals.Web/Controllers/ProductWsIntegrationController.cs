@@ -1,4 +1,4 @@
-using Chemicals.Core.Interfaces.IntegrationServices;
+using Chemicals.Core.Interfaces.Integration;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

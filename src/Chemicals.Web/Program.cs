@@ -1,8 +1,11 @@
 using System.Text;
 using Chemicals.Core.Interfaces.DomainServices;
+using Chemicals.Core.Interfaces.Integration;
 using Chemicals.Core.Interfaces.Repositories;
 using Chemicals.Core.Services.DomainServices;
+using Chemicals.Core.Services.IntegrationServices;
 using Chemicals.Infrastructure.Data;
+using Chemicals.Infrastructure.Producers;
 using Chemicals.Web.Interfaces;
 using Chemicals.Web.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -41,9 +44,13 @@ builder.Services.AddDbContext<ChemicalContext>(options =>
 builder.Services.AddScoped(typeof(IReadRepository<>), typeof(EfReadRepository<>));
 builder.Services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
 
+//Build kafka producer
+builder.Services.AddScoped<ISyncProducer, KafkaProducer>();
 
 //Build services
 builder.Services.AddScoped<IProductService, ProductService>();
+
+builder.Services.AddScoped<IProductWsIntegrationService, ProductWsIntegrationService>();
 
 builder.Services.AddScoped<IProductViewModelService, ProductViewModelService>();
 

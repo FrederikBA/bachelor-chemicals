@@ -1,6 +1,6 @@
 using Shared.Integration.Models.Dtos;
 
-namespace Chemicals.Core.Interfaces.IntegrationServices;
+namespace Chemicals.Core.Interfaces.Integration;
 
 public interface IProductWsIntegrationService
 {

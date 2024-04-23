@@ -1,5 +1,5 @@
 using Chemicals.Core.Entities.ChemicalAggregate;
-using Chemicals.Core.Interfaces.IntegrationServices;
+using Chemicals.Core.Interfaces.Integration;
 using Chemicals.Core.Interfaces.Repositories;
 using Shared.Integration.Models.Dtos;
 

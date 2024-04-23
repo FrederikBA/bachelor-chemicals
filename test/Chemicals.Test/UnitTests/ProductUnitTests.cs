@@ -2,6 +2,7 @@ using Ardalis.Specification;
 using Chemicals.Core.Entities.ChemicalAggregate;
 using Chemicals.Core.Exceptions;
 using Chemicals.Core.Interfaces.DomainServices;
+using Chemicals.Core.Interfaces.Integration;
 using Chemicals.Core.Interfaces.Repositories;
 using Chemicals.Core.Models.Dtos;
 using Chemicals.Core.Services;
@@ -16,11 +17,17 @@ public class ProductUnitTests
     private readonly IProductService _productService;
     private readonly Mock<IReadRepository<Product>> _productReadRepositoryMock = new();
     private readonly Mock<IRepository<ProductWarningSentence>> _productWarningSentenceRepositoryMock = new();
+    private readonly Mock<ISyncProducer> _mockKafkaProducer = new();
 
     public ProductUnitTests()
     {
         _productService =
-            new ProductService(_productReadRepositoryMock.Object, _productWarningSentenceRepositoryMock.Object);
+            new ProductService
+            (
+                _productReadRepositoryMock.Object,
+                _productWarningSentenceRepositoryMock.Object,
+                _mockKafkaProducer.Object
+            );
     }
 
     [Fact]
