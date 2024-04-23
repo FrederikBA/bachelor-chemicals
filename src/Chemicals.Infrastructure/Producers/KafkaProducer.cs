@@ -5,12 +5,12 @@ using Confluent.Kafka;
 namespace Chemicals.Infrastructure.Producers;
 
 
-public class SyncProducer : ISyncProducer   
+public class KafkaProducer : ISyncProducer   
 {
     private readonly IProducer<string, string> _producer;
     private const string BootstrapServers = "localhost:9092";
 
-    public SyncProducer()
+    public KafkaProducer()
     {
         var config = new ProducerConfig { BootstrapServers = BootstrapServers };
         _producer = new ProducerBuilder<string, string>(config).Build();

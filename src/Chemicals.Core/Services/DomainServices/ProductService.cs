@@ -77,9 +77,12 @@ public class ProductService : IProductService
             WarningSentenceId = dto.WarningSentenceId
         };
 
-        await _productWarningSentenceRepository.AddAsync(productWarningSentence);
+        var result = await _productWarningSentenceRepository.AddAsync(productWarningSentence);
+        
+        //Sync with SEA database
+        await _syncProducer.ProduceAsync("sync-add-chemical", result);
 
-        return productWarningSentence;
+        return result;
     }
 
     public async Task<ProductWarningSentence> RemoveWarningSentenceAsync(RemoveWsDto dto)
@@ -94,6 +97,9 @@ public class ProductService : IProductService
         try
         {
             await _productWarningSentenceRepository.DeleteAsync(productWarningSentence);
+            
+            //Sync with SEA database
+            await _syncProducer.ProduceAsync("sync-delete-chemical", productWarningSentence);
 
             return productWarningSentence;
         }
