@@ -1,7 +1,9 @@
 using System.Text;
 using Chemicals.Core.Interfaces.DomainServices;
+using Chemicals.Core.Interfaces.Integration;
 using Chemicals.Core.Interfaces.Repositories;
 using Chemicals.Core.Services.DomainServices;
+using Chemicals.Core.Services.IntegrationServices;
 using Chemicals.Infrastructure.Data;
 using Chemicals.Web.Interfaces;
 using Chemicals.Web.Services;
@@ -44,6 +46,8 @@ builder.Services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
 
 //Build services
 builder.Services.AddScoped<IProductService, ProductService>();
+
+builder.Services.AddScoped<IProductWsIntegrationService, ProductWsIntegrationService>();
 
 builder.Services.AddScoped<IProductViewModelService, ProductViewModelService>();
 
