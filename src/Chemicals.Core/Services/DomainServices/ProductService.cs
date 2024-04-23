@@ -2,6 +2,7 @@ using System.Text.Json;
 using Chemicals.Core.Entities.ChemicalAggregate;
 using Chemicals.Core.Exceptions;
 using Chemicals.Core.Interfaces.DomainServices;
+using Chemicals.Core.Interfaces.Integration;
 using Chemicals.Core.Interfaces.Repositories;
 using Chemicals.Core.Models.Dtos;
 using Chemicals.Core.Specifications;
@@ -15,13 +16,15 @@ public class ProductService : IProductService
 {
     private readonly IReadRepository<Product> _productReadRepository;
     private readonly IRepository<ProductWarningSentence> _productWarningSentenceRepository;
+    private readonly ISyncProducer _syncProducer;
     private readonly HttpClient _httpClient;
 
     public ProductService(IReadRepository<Product> productReadRepository,
-        IRepository<ProductWarningSentence> productWarningSentenceRepository)
+        IRepository<ProductWarningSentence> productWarningSentenceRepository, ISyncProducer syncProducer)
     {
         _productReadRepository = productReadRepository;
         _productWarningSentenceRepository = productWarningSentenceRepository;
+        _syncProducer = syncProducer;
 
         _httpClient = new HttpClient();
         _httpClient.DefaultRequestHeaders.Add("Authorization",
