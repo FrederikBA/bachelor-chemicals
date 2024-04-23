@@ -78,9 +78,9 @@ public class ProductService : IProductService
         };
 
         var result = await _productWarningSentenceRepository.AddAsync(productWarningSentence);
-        
+
         //Sync with SEA database
-        await _syncProducer.ProduceAsync("sync-add-chemical", result);
+        await _syncProducer.ProduceAsync(Config.Kafka.Topics.SyncAddProduct, result);
 
         return result;
     }
@@ -97,9 +97,9 @@ public class ProductService : IProductService
         try
         {
             await _productWarningSentenceRepository.DeleteAsync(productWarningSentence);
-            
+
             //Sync with SEA database
-            await _syncProducer.ProduceAsync("sync-delete-chemical", productWarningSentence);
+            await _syncProducer.ProduceAsync(Config.Kafka.Topics.SyncDeleteProduct, productWarningSentence);
 
             return productWarningSentence;
         }
