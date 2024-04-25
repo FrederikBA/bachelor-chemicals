@@ -104,11 +104,11 @@ Log.Logger = new LoggerConfiguration()
 //Startup logging
 try
 {
-    Log.Information("AuthService starting up");
+    Log.Information("Chemicals Service starting up");
 }
 catch (Exception ex)
 {
-    Log.Fatal(ex, "AuthService failed to start up");
+    Log.Fatal(ex, "Chemicals Service failed to start up");
 }
 finally
 {
