@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Shared.Integration.Configuration;
+using Serilog;
+using Serilog.Events;
 
 const string policyName = "AllowOrigin";
 
@@ -76,6 +78,42 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy(Config.Authorization.Policies.RequireSuperAdminRole, policy => policy.RequireRole(Config.Authorization.Roles.SuperAdmin));
     options.AddPolicy(Config.Authorization.Policies.RequireIntegrationPolicy, policy => policy.RequireRole(Config.Authorization.Roles.IntegrationPolicy));
 });
+
+//Logging
+
+//Serilog
+builder.Host.UseSerilog((ctx, lc) => lc
+    .WriteTo.Console()
+    .Filter.ByExcluding(logEvent =>
+        logEvent.Level == LogEventLevel.Warning &&
+        logEvent.MessageTemplate.Text.Contains("XML"))
+    .Filter.ByExcluding(logEvent =>
+        logEvent.Level == LogEventLevel.Warning &&
+        logEvent.MessageTemplate.Text.Contains("https"))
+    .Filter.ByExcluding(logEvent =>
+        logEvent.Level == LogEventLevel.Warning &&
+        logEvent.MessageTemplate.Text.Contains("Storing"))
+    .ReadFrom.Configuration(ctx.Configuration));
+
+//Configure startup logging
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Information()
+    .WriteTo.Console()
+    .CreateLogger();
+
+//Startup logging
+try
+{
+    Log.Information("AuthService starting up");
+}
+catch (Exception ex)
+{
+    Log.Fatal(ex, "AuthService failed to start up");
+}
+finally
+{
+    Log.CloseAndFlush();
+}
 
 var app = builder.Build();
 
