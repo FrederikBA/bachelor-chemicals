@@ -6,6 +6,7 @@ using Chemicals.Core.Interfaces.Integration;
 using Chemicals.Core.Interfaces.Repositories;
 using Chemicals.Core.Models.Dtos;
 using Chemicals.Core.Specifications;
+using Microsoft.Extensions.Logging;
 using Shared.Integration.Authorization;
 using Shared.Integration.Configuration;
 using Shared.Integration.Models.Dtos;
@@ -19,13 +20,16 @@ public class ProductService : IProductService
     private readonly IRepository<ProductWarningSentence> _productWarningSentenceRepository;
     private readonly ISyncProducer _syncProducer;
     private readonly HttpClient _httpClient;
+    private readonly ILogger<ProductService> _logger;
 
     public ProductService(IReadRepository<Product> productReadRepository,
-        IRepository<ProductWarningSentence> productWarningSentenceRepository, ISyncProducer syncProducer)
+        IRepository<ProductWarningSentence> productWarningSentenceRepository, ISyncProducer syncProducer,
+        ILogger<ProductService> logger)
     {
         _productReadRepository = productReadRepository;
         _productWarningSentenceRepository = productWarningSentenceRepository;
         _syncProducer = syncProducer;
+        _logger = logger;
 
         _httpClient = new HttpClient();
         _httpClient.DefaultRequestHeaders.Add("Authorization",
@@ -63,7 +67,11 @@ public class ProductService : IProductService
         var warningSentenceDtos = JsonSerializer.Deserialize<List<SharedWarningSentenceDto>>(content);
 
         //Validate if warning sentences exist
-        if (warningSentenceDtos == null) throw new Exception("Warning Sentences not found.");
+        if (warningSentenceDtos == null)
+        {
+            _logger.LogError("No warning sentences found from integration endpoint.");
+            throw new Exception("Warning Sentences not found.");
+        }
 
         //Validate if given warning sentence exist
         var itemIds = warningSentenceDtos!.Select(item => item.WarningSentenceId).ToList();
@@ -81,7 +89,12 @@ public class ProductService : IProductService
         var result = await _productWarningSentenceRepository.AddAsync(productWarningSentence);
 
         //Sync with SEA database
-        await _syncProducer.ProduceAsync(Config.Kafka.Topics.SyncAddProduct, new SyncProductWarningSentenceDto { ProductId = result.ProductId, WarningSentenceId = result.WarningSentenceId });
+        await _syncProducer.ProduceAsync(Config.Kafka.Topics.SyncAddProduct,
+            new SyncProductWarningSentenceDto
+                { ProductId = result.ProductId, WarningSentenceId = result.WarningSentenceId });
+
+        _logger.LogInformation(
+            $"Syncing product with SEA database (Warning Sentence added). ProductId: {result.ProductId}, WarningSentenceId: {result.WarningSentenceId}");
 
         return result;
     }
@@ -101,7 +114,14 @@ public class ProductService : IProductService
 
             //Sync with SEA database
             await _syncProducer.ProduceAsync(Config.Kafka.Topics.SyncDeleteProduct,
-                new SyncProductWarningSentenceDto { ProductId = productWarningSentence.ProductId, WarningSentenceId = productWarningSentence.WarningSentenceId });
+                new SyncProductWarningSentenceDto
+                {
+                    ProductId = productWarningSentence.ProductId,
+                    WarningSentenceId = productWarningSentence.WarningSentenceId
+                });
+
+            _logger.LogInformation(
+                $"Syncing product with SEA database (Warning Sentence removed). ProductId: {productWarningSentence.ProductId}, WarningSentenceId: {productWarningSentence.WarningSentenceId}");
 
             return productWarningSentence;
         }
