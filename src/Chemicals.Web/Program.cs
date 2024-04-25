@@ -14,6 +14,7 @@ using Microsoft.IdentityModel.Tokens;
 using Shared.Integration.Configuration;
 using Serilog;
 using Serilog.Events;
+using Prometheus;
 
 const string policyName = "AllowOrigin";
 
@@ -121,6 +122,14 @@ app.UseSwagger();
 app.UseSwaggerUI();
 app.UseCors(policyName);
 app.UseAuthentication();
+app.UseMetricServer();
+app.UseHttpMetrics();
+app.UseRouting();
+app.UseAuthorization();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+});
 app.UseRouting();
 app.UseAuthorization();
 app.UseHttpsRedirection();
