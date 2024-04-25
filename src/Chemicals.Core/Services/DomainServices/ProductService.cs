@@ -9,6 +9,7 @@ using Chemicals.Core.Specifications;
 using Shared.Integration.Authorization;
 using Shared.Integration.Configuration;
 using Shared.Integration.Models.Dtos;
+using Shared.Integration.Models.Dtos.Sync;
 
 namespace Chemicals.Core.Services.DomainServices;
 
@@ -80,7 +81,7 @@ public class ProductService : IProductService
         var result = await _productWarningSentenceRepository.AddAsync(productWarningSentence);
 
         //Sync with SEA database
-        await _syncProducer.ProduceAsync(Config.Kafka.Topics.SyncAddProduct, result);
+        await _syncProducer.ProduceAsync(Config.Kafka.Topics.SyncAddProduct, new SyncProductWarningSentenceDto { ProductId = result.ProductId, WarningSentenceId = result.WarningSentenceId });
 
         return result;
     }
@@ -99,7 +100,8 @@ public class ProductService : IProductService
             await _productWarningSentenceRepository.DeleteAsync(productWarningSentence);
 
             //Sync with SEA database
-            await _syncProducer.ProduceAsync(Config.Kafka.Topics.SyncDeleteProduct, productWarningSentence);
+            await _syncProducer.ProduceAsync(Config.Kafka.Topics.SyncDeleteProduct,
+                new SyncProductWarningSentenceDto { ProductId = productWarningSentence.ProductId, WarningSentenceId = productWarningSentence.WarningSentenceId });
 
             return productWarningSentence;
         }
