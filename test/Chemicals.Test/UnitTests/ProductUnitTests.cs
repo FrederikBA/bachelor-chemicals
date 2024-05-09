@@ -19,6 +19,7 @@ public class ProductUnitTests
     private readonly Mock<IReadRepository<Product>> _productReadRepositoryMock = new();
     private readonly Mock<IRepository<ProductWarningSentence>> _productWarningSentenceRepositoryMock = new();
     private readonly Mock<ISyncProducer> _mockKafkaProducer = new();
+    private readonly Mock<IWsHttpService> _mockWsHttpService = new();
     private readonly Mock<ILogger<ProductService>> _mockLogger = new();
 
     public ProductUnitTests()
@@ -29,7 +30,8 @@ public class ProductUnitTests
                 _productReadRepositoryMock.Object,
                 _productWarningSentenceRepositoryMock.Object,
                 _mockKafkaProducer.Object,
-                _mockLogger.Object
+                _mockLogger.Object,
+                _mockWsHttpService.Object
             );
     }
 

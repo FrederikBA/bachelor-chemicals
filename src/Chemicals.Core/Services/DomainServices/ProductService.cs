@@ -19,21 +19,18 @@ public class ProductService : IProductService
     private readonly IReadRepository<Product> _productReadRepository;
     private readonly IRepository<ProductWarningSentence> _productWarningSentenceRepository;
     private readonly ISyncProducer _syncProducer;
-    private readonly HttpClient _httpClient;
+    private readonly IWsHttpService _wsHttpService;
     private readonly ILogger<ProductService> _logger;
 
     public ProductService(IReadRepository<Product> productReadRepository,
         IRepository<ProductWarningSentence> productWarningSentenceRepository, ISyncProducer syncProducer,
-        ILogger<ProductService> logger)
+        ILogger<ProductService> logger, IWsHttpService wsHttpService)
     {
         _productReadRepository = productReadRepository;
         _productWarningSentenceRepository = productWarningSentenceRepository;
         _syncProducer = syncProducer;
         _logger = logger;
-
-        _httpClient = new HttpClient();
-        _httpClient.DefaultRequestHeaders.Add("Authorization",
-            "Bearer " + IntegrationAuthService.GetIntegrationToken());
+        _wsHttpService = wsHttpService;
     }
 
     public async Task<List<Product>> GetAllProductsAsync()
@@ -62,10 +59,9 @@ public class ProductService : IProductService
 
     public async Task<ProductWarningSentence> AddWarningSentenceAsync(AddWsDto dto)
     {
-        var response = await _httpClient.GetAsync(Config.IntegrationEndpoints.WarningSentenceIntegration);
-        var content = await response.Content.ReadAsStringAsync();
-        var warningSentenceDtos = JsonSerializer.Deserialize<List<SharedWarningSentenceDto>>(content);
-
+        //Get warning sentences from integration endpoint
+        var warningSentenceDtos = await _wsHttpService.GetActiveWarningSentenceAsync();
+        
         //Validate if warning sentences exist
         if (warningSentenceDtos == null)
         {
